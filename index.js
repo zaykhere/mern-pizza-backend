@@ -21,7 +21,7 @@ mongoose
 const pizzaRoutes = require("./routes/pizzaRoutes");
 
 //Apply routes
-app.use("/pizza", pizzaRoutes);
+app.use("/api/pizza", pizzaRoutes);
 
 //Server setup
 const PORT = process.env.PORT || 8000;
