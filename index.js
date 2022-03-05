@@ -17,6 +17,12 @@ mongoose
   .then(() => console.log("Connected to Database"))
   .catch((err) => console.log(err));
 
+//Import Routes
+const pizzaRoutes = require("./routes/pizzaRoutes");
+
+//Apply routes
+app.use("/pizza", pizzaRoutes);
+
 //Server setup
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
