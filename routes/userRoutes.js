@@ -36,10 +36,6 @@ router.post("/login", async(req,res)=> {
     const matchPassword = await user.matchPassword(password);
     if (matchPassword) {
       res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
         token: generateToken(user._id) 
       })
     }
