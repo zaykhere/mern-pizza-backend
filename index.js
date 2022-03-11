@@ -19,9 +19,11 @@ mongoose
 
 //Import Routes
 const pizzaRoutes = require("./routes/pizzaRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 //Apply routes
 app.use("/api/pizza", pizzaRoutes);
+app.use("/api/users", userRoutes);
 
 //Server setup
 const PORT = process.env.PORT || 8000;
