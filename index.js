@@ -20,10 +20,12 @@ mongoose
 //Import Routes
 const pizzaRoutes = require("./routes/pizzaRoutes");
 const userRoutes = require("./routes/userRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 //Apply routes
 app.use("/api/pizza", pizzaRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
 
 //Server setup
 const PORT = process.env.PORT || 8000;
