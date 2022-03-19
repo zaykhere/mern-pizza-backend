@@ -4,7 +4,7 @@ const {protect} = require("../middlewares/authMiddleware");
 const { v4: uuidv4 } = require('uuid');
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
-router.post("/placeorder" ,async(req,res)=> {
+router.post("/placeorder" , protect, async(req,res)=> {
 	const {token, subtotal, userToken, cartItems} = req.body;
 
 	try{
