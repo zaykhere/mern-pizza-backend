@@ -55,4 +55,16 @@ router.post("/placeorder" , protect, async(req,res)=> {
 	}
 })
 
+router.get("/myorders", protect, async(req,res)=> {
+	try{
+		const orders = await Order.find({userId: req.user._id}).sort({createdAt: -1});
+		if(!orders) return res.json({message: "You have not ordered anything yet."});
+		res.json({success: true, orders: orders});
+	}
+	catch(e) {
+		console.log(e);
+		res.json({error: e.message});
+	}
+})
+
 module.exports = router;
