@@ -37,7 +37,8 @@ router.post("/login", async(req,res)=> {
     if (matchPassword) {
       res.json({
         token: generateToken(user._id),
-	name: user.name 
+	name: user.name,
+	isAdmin: user.isAdmin
       })
     }
     else {
