@@ -47,6 +47,18 @@ router.post("/addpizza", protect, admin, async(req,res)=> {
 
 })
 
+router.delete("/:id", protect, admin, async(req,res)=> {
+	const pizzaId = req.params.id;
+
+	try {
+		await Pizza.findOneAndDelete({_id: pizzaId});
+		res.status(200).send("Pizza deleted successfully");
+	}
+	catch(e) {
+		return res.json({error: e.message});
+	}
+})
+
 router.put("/editpizza/:id", protect, admin, async(req,res)=> {
 	try {
 		let pizza = await Pizza.findOne({_id: req.params.id});
