@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {protect} = require("../middlewares/authMiddleware");
+const {protect, admin} = require("../middlewares/authMiddleware");
 const { v4: uuidv4 } = require('uuid');
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const Order = require("../models/orderModel");
@@ -60,6 +60,36 @@ router.get("/myorders", protect, async(req,res)=> {
 		const orders = await Order.find({userId: req.user._id}).sort({createdAt: -1});
 		if(!orders) return res.json({message: "You have not ordered anything yet."});
 		res.json({success: true, orders: orders});
+	}
+	catch(e) {
+		console.log(e);
+		res.json({error: e.message});
+	}
+})
+
+router.get("/", protect, admin, async(req,res)=> {
+	try {
+		const orders = await Order.find().sort({createdAt: -1});
+		if(!orders) return res.send("There are no orders yet");
+
+		res.json({success: true, orders: orders});
+	}
+	catch(e) {
+		console.log(e);
+		res.json({error: e.message});
+	}
+})
+
+router.put("/deliver/:id", protect, admin, async(req,res)=> {
+	const orderId = req.params.id;
+
+	try {
+		const order = await Order.findOne({_id: orderId});
+		if(!order) return res.status(404).json({error: "Order Not found"});
+
+		order.isDelivered = true;
+		await order.save();
+		res.json({success: true, message: "Order Delivered Successfully"});
 	}
 	catch(e) {
 		console.log(e);
