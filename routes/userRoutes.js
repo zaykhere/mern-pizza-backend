@@ -3,6 +3,7 @@ const router = express.Router();
 const RegisterValidation = require("../validation/registerValidation");
 const User = require("../models/userModel");
 const generateToken = require("../utils/genToken");
+const {protect, admin} = require("../middlewares/authMiddleware");
 
 router.post("/register", async (req, res) => {
   const { error } = RegisterValidation.validate(req.body);
@@ -51,6 +52,19 @@ router.post("/login", async(req,res)=> {
     
   }
   
+})
+
+router.get("/allusers", protect, admin, async(req,res)=> {
+  try {
+    const users = await User.find();
+    if(!users) return res.json({error: "No users found"});
+
+    res.json({success: true, users: users});
+  }
+  catch(e) {
+    console.log(e);
+    res.json({error: e.message});
+  }
 })
 
 module.exports = router;
