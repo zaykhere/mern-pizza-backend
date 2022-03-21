@@ -10,6 +10,20 @@ router.get("/", async(req,res)=> {
     res.send(pizzas);
 })
 
+router.get("/:pizzaid", async(req,res)=> {
+	const pizzaId = req.params.pizzaid;
+	try {
+		const pizza = await Pizza.findOne({_id: pizzaId});
+		if(!pizza) return res.status(404).json({error: "Pizza not found"});
+
+		res.json({success: true, data: pizza});
+	}
+	catch(e) {
+		console.log(e);
+		res.json({error: e.message});
+	}
+})
+
 router.post("/addpizza", protect, admin, async(req,res)=> {
 	const pizza = req.body.pizza;
 
@@ -31,6 +45,27 @@ router.post("/addpizza", protect, admin, async(req,res)=> {
 		return res.status(500).json({error: e.message});
 	}
 
+})
+
+router.put("/editpizza/:id", protect, admin, async(req,res)=> {
+	try {
+		let pizza = await Pizza.findOne({_id: req.params.id});
+		if(!pizza) return res.status(404).json({error: "Requested pizza is not found"});
+
+		pizza.name = req.body.pizza.name,
+		pizza.description = req.body.pizza.description,
+		pizza.image = req.body.pizza.image,
+		pizza.category = req.body.pizza.category,
+		pizza.prices = [req.body.pizza.prices],
+
+		await pizza.save();
+
+		res.send("Pizza details added successfully");
+	}
+	catch(e) {
+		console.log(e);
+		res.status(500).json({error: e.message});
+	}
 })
 
 module.exports = router;
