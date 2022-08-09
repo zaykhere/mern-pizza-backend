@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const app = express();
 
@@ -8,6 +9,7 @@ const app = express();
 dotenv.config({ path: "./config.env" });
 
 app.use(express.json());
+app.use(cors());
 
 mongoose
   .connect(process.env.DB_CONN, {
